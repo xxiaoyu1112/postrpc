@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option go_package="/post_data_collect";
+
+package post_data_collect;
+
+message CollectPostDealRequest{
+  string PostDealId = 1;
+  string PostDealContent= 2;
+}
+
+message CollectPostDealResponse{
+  string message = 1;
+  int32 status = 2;
+}
+
+
+
+
+service PostDataCollect{
+    rpc CollectPostDeal (CollectPostDealRequest) returns (CollectPostDealResponse) {}
+}

@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+option go_package="/post_model_predict";
+
+package post_model_predict;
+
+message Point{
+  repeated float features = 1;
+}
+
+message PredictResult{
+  repeated int32 order = 1;
+}
+
+message PredictData{
+  int32 start = 1;
+  repeated Point points = 2;
+}
+
+// 同步预测
+message PredictRequest{
+  string modelName = 1;
+  string modelVersion = 2;
+  PredictData data = 3;
+}
+
+message PredictResponse{
+  string message = 1;
+  int32 status = 2;
+  PredictResult data = 3;
+}
+
+// 异步预测
+message PredictAysncRequest{
+  string modelName = 1;
+  string modelVersion = 2;
+  PredictData data = 3;
+}
+
+message PredictAysncData{
+  string taskId = 1;
+}
+
+message PredictAysncResponse{
+  string message = 1;
+  int32 status = 2;
+  PredictAysncData data = 3;
+}
+
+// 查询异步预测结果
+message GetPredictAysncResultRequest{
+  string taskId = 1;
+}
+message PredictAysncResult{
+  int32 status = 1;
+  repeated int32 order = 2;
+}
+message GetPredictAysncResultResponse{
+  string message = 1;
+  int32 status = 2;
+  PredictAysncResult data = 3;
+}
+
+service PostModelPredict{
+    rpc Predict (PredictRequest) returns (PredictResponse) {}
+    rpc PredictAysnc(PredictAysncRequest) returns (PredictAysncResponse){}
+    rpc GetPredictAysncResult(GetPredictAysncResultRequest) returns (GetPredictAysncResultResponse){}
+}

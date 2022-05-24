@@ -1,0 +1,6 @@
+
+.idea
+*/.idea/
+.code-workspace
+*/build_out
+*/out/

@@ -1,0 +1,102 @@
+syntax = "proto3";
+
+option go_package="/post_model_manage";
+
+package post_model_manage;
+
+message ModelIdentity{
+  string modelName = 1;
+  string modelVersion = 2;
+}
+
+message ModelConfig{
+  int32 minWorkers = 1;
+  int32 maxWorkers = 2;
+}
+
+message WORKER {
+  string id = 1;
+  string startTime = 2;
+  string status = 3;
+  int32 memoryUsage = 4;
+  int32 pid = 5;
+  bool gpu = 6;
+  string gpuUsage = 7;
+}
+
+message ModelState {
+  string modelName = 1;
+  string modelVersion = 2;
+  string modelUrl = 3;
+  string runtime = 4;
+  int32 minWorkers = 5;
+  int32 maxWorkers = 6;
+  int32 batchSize = 7;
+  int32 maxBatchDelay = 8;
+  bool loadedAtStartup = 9;
+  repeated WORKER  workers = 10;
+}
+
+// 获取所有模型
+message GetModelsRequest{
+}
+
+message GetModelsData{
+  repeated ModelIdentity data = 1;
+}
+message GetModelsResponse {
+  string message = 1;
+  int32 status = 2;
+  GetModelsData data = 3;
+}
+
+// 获取所有模型详细信息
+message GetModelStatesRequest{
+}
+message GetModelStatesData{
+  repeated ModelState modelStates = 1;
+}
+message GetModelStatesResponse{
+  string message = 1;
+  int32 status = 2;
+  GetModelStatesData data = 3;
+}
+
+
+// 卸载模型
+message RemoveModelRequest{
+  ModelIdentity modelIdentity = 1;
+}
+
+message RemoveModelResponse {
+  string message = 1;
+  int32 status = 2;
+}
+
+// 更新模型
+message UpdateModelConfigRequest{
+  ModelIdentity modelIdentity = 1;
+  ModelConfig modelConfig = 2;
+}
+
+message UpdateModelConfigResponse {
+  string message = 1;
+  int32 status = 2;
+}
+
+message RegisterModelRequest{
+  string url = 1;
+}
+
+message RegisterModelResponse{
+  string message = 1;
+  int32 status = 2;
+}
+
+service PostModelManage{
+    rpc GetModels (GetModelsRequest) returns (GetModelsResponse) {}
+    rpc RemoveModel (RemoveModelRequest) returns (RemoveModelResponse) {}
+    rpc UpdateModelConfig (UpdateModelConfigRequest) returns (UpdateModelConfigResponse) {}
+    rpc GetModelStates(GetModelStatesRequest) returns (GetModelStatesResponse) {}
+    rpc RegisterModel(RegisterModelRequest) returns (RegisterModelResponse){}
+}

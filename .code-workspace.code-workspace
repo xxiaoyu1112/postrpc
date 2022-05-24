@@ -1,0 +1,29 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "idl"
+		},
+		{
+			"path": "post_data_collect"
+		},
+		{
+			"path": "post_model_manage"
+		},
+		{
+			"path": "post_model_predict"
+		},
+		{
+			"path": "post_data_manage"
+		},
+		{
+			"path": "sh"
+		},
+		{
+			"path": "rpc_sdk"
+		}
+	],
+	"settings": {}
+}

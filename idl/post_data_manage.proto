@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+option go_package="/post_data_manage";
+
+package post_data_manage;
+
+
+message GeneratePostPredictDataRequest{
+  string Tag = 1;
+}
+
+message GeneratePostPredictDataResponse{
+  string Message = 1;
+  int32 Status = 2;
+  string TaskId = 3;
+}
+
+message GetPostPredictTaskStatusRequest{
+  string TaskId = 1;
+}
+message PredictTaskStatus{
+  string Message = 1;
+  int32 Status = 2;
+  bool Finished = 3;
+}
+message GetPostPredictTaskStatusResponse{
+  string Message = 1;
+  int32 Status = 2;
+  PredictTaskStatus PredictTaskStatus = 3;
+}
+
+message GetPostPredictDataRequest{
+  int32 PageSize = 1;
+  int32 PageNum = 2;
+  string DealDate = 3;
+  string DealRegion = 4;
+}
+
+message Point{
+  repeated double features = 1;
+}
+
+message PredictDeal{
+  repeated Point Points = 1;
+  repeated int32 Order = 2;
+  int32 Start = 3;
+  int32 Length = 4;
+  string region = 5;
+  string deal_date = 6;
+}
+
+message PostPredictData{
+  repeated PredictDeal PredictDeals = 1;
+  // int32 total = 2;
+}
+
+message GetPostPredictDataResponse{
+  string Message = 1;
+  int32 Status = 2;
+  PostPredictData PostPredictData = 3;
+}
+
+message GetRawDataTreeRequest{
+
+}
+
+message RawDataTreeNode{
+  string Label = 1;
+  string Value = 2;
+  string Source = 3;
+  repeated RawDataTreeNode Child = 4;
+}
+
+message RawDataTree{
+  RawDataTreeNode Root = 1;
+}
+
+message GetRawDataTreeResponse{
+  string Message = 1;
+  int32 Status = 2; 
+  RawDataTree Tree = 3;
+}
+
+message GetRawDataRequest{
+  string Source = 1;
+  string Id = 2;
+  int32 PageSize = 3;
+  int32 PageNum = 4;
+}
+
+message GetRawDataResponse{
+  string Message = 1;
+  int32 Status = 2;
+  RawDataPage Data = 3;
+}
+message RawDataPage{
+  int64 total = 1;
+  repeated RawData RawDatas = 2;
+}
+message RawData{
+  string DealDate = 1;    // "日期",
+  string RegionId = 2;      // "运营区id",
+  string City = 3;      // "城市",
+  string PostManId = 4;      // "快递员id",
+  string GetDealTime = 5;      // "接单时间",
+  string AppointmentTimeOne = 6;      // "预约时间1",
+  string AppointmentTimeTwo = 7;      // "预约时间2",
+  string DealLongitude = 8;      // "订单经度",
+  string DealLatitude = 9;     // "订单纬度",
+  string DealRegionId = 10;      // "订单所属区块id",
+  string DealBlockTypeId = 11;      // "区块类型id",
+  string DealBlockType = 12;      // "区块类型",
+  string DealFinishTime = 13;      // "订单揽收时间",
+  string RecentFinishDealTime = 14;      // "揽收最近时间",
+  string RecentFinishDealLongitude = 15;     // "揽收最近经度",
+  string RecentFinishDealLatitude = 16;      // "揽收最近纬度",
+  string FinishDealPrecision = 17;           // "揽收轨迹精度",
+  string RecentGetDealTime = 18;       // "接单最近时间",      
+  string RecentGetDealLongitude = 19;  // "接单最近经度",     
+  string RecentGetDealLatitude = 20;   // "接单最近纬度",       
+  string GetDealPrecision = 21;        // "接单轨迹精度",
+}
+
+service PostDataManage{
+    rpc GeneratePostPredictData (GeneratePostPredictDataRequest) returns (GeneratePostPredictDataResponse) {}
+    rpc GetPostPredictData (GetPostPredictDataRequest) returns (GetPostPredictDataResponse) {}
+    rpc GetPostPredictTaskStatus (GetPostPredictTaskStatusRequest) returns(GetPostPredictTaskStatusResponse){}
+    rpc GetRawDataTree(GetRawDataTreeRequest) returns(GetRawDataTreeResponse){}
+    rpc GetRawData(GetRawDataRequest)returns(GetRawDataResponse){}
+}
